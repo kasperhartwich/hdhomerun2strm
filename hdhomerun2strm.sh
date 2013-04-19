@@ -22,16 +22,20 @@ else
 fi
 
 # Scan channels directly into while loop - pull relevant data and create strm file
+echo "Started scanning on tuner ${tuner}."
 hdhomerun_config $device scan 1 | grep -vEi 'tsid|lock|none' | while read output
 	do
 		if [[ "$output" == "SCANNING"* ]]; then
-			scan=$(echo $output | awk '{print $2}')
+			channel=$(echo $output | awk '{print $2}')
+			echo "Scanning channel: $channel"
 		fi
 		if [[ "$output" == "PROGRAM"* ]]; then
 			prog=$(echo $output | awk '{print $2}')
 			file=$(echo $output | cut -d':' -f2)
 			# Create .strm file
-			echo hdhomerun://$device-1/tuner1$file\?channel\=auto\:$scan\&program\=${prog/:/} > ~/Videos/Live\ TV/"${file/\ /}".strm		
+			echo "Created strm file for $file"
+			echo hdhomerun://$device-1/tuner1$file\?channel\=auto\:$channel\&program\=${prog/:/} > ~/Videos/Live\ TV/"${file/\ /}".strm		
 		fi
 	done
+	echo "Finished."
 exit 0

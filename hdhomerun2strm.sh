@@ -26,7 +26,7 @@ fi
 
 # Scan channels directly into while loop - pull relevant data and create strm file
 echo "Started scanning on tuner ${tuner}."
-hdhomerun_config $device scan 1 | grep -vEi 'tsid|lock|none' | while read output
+hdhomerun_config $device scan $tuner | grep -vEi 'tsid|lock|none' | while read output
 	do
 		if [[ "$output" == "SCANNING"* ]]; then
 			channel=$(echo $output | awk '{print $2}')

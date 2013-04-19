@@ -29,14 +29,14 @@ echo "Started scanning on tuner ${tuner}."
 hdhomerun_config $device scan $tuner | grep -vEi 'tsid|lock|none' | while read output
 	do
 		if [[ "$output" == "SCANNING"* ]]; then
-			channel=$(echo $output | awk '{print $2}')
+			channel=$(echo $output | awk '{print $3}' | grep -o '[0-9]\+')
 			echo "Scanning channel: $channel"
 		fi
 		if [[ "$output" == "PROGRAM"* ]]; then
-			program=$(echo $output | awk '{print $2}')
-			channelname=$(echo $output | cut -d':' -f2)
+			program=$(echo $output | awk '{print $2}' | grep -o '[0-9]\+')
+			channelname=$(echo $output | sed -E "s/.+: [0-9]+ (.+)/\1/g")
 			# Create .strm file
-			echo "Created strm file for $file"
+			echo "Created strm file for $channelname"
 			echo "hdhomerun://${device}-${tuner}/tuner${tuner}?channel=auto:${channel}&program=${program}" >"${directory}/${channelname}.strm"
 		fi
 	done

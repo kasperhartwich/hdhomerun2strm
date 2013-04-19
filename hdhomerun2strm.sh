@@ -1,21 +1,11 @@
 #!/bin/bash
 
-# Uses hdhomerun_config to scan for channels and then creates .strm files in ~/Videos/Live TV for XBMC streaming
-
-# INSTALL SECTION UNTESTED - which is why it's commented out; uncomment at your own risk
-# Check if you have already installed hdhomerun-config; install it if not
-#if [ ! -d $(dpkg -l | grep hdhomerun-config) ]; then
-#	cd /tmp
-#	for j in http://download.silicondust.com/hdhomerun/libhdhomerun_20120405.tgz http://download.silicondust.com/hdhomerun/hdhomerun_config_gui_20120405.tgz
-#		wget $j
-#		tar xvzf hdhomerun_config_gui_20120405.tgz
-#		cd hdhomerun_config_gui/
-#		./configure || $( sudo apt-get install --assume-yes libgtk2.0-dev; ./configure )
-#		make
-#		sudo make install clean
-#	done
-#	#rm -rf /tmp/hdhomerun*
-#fi
+#Check if 'hdhomerun_config' is installed
+if ! type "hdhomerun_config" > /dev/null 2>&1; then
+	echo "HDHomeRun tools is required for this script to work."
+	echo "Can be downloaded here: http://www.silicondust.com/support/hdhomerun/downloads/"
+	exit
+fi
 
 # Check if directory exists, if not then create it
 if [ ! -d "~/Videos/Live\ TV" ]; then

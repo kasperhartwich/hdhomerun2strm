@@ -7,10 +7,13 @@ if ! type "hdhomerun_config" > /dev/null 2>&1; then
 	exit
 fi
 
-# Check if directory exists, if not then create it
-if [ ! -d "~/Videos/Live\ TV" ]; then
-	mkdir -p ~/Videos/Live\ TV
+if [ -z "$1" ]; then 
+	echo "usage: $0 <tuner_number> <destination directory>"
+	exit
 fi
+
+directory=$2
+tuner=$1
 
 # Discover device name
 device=$(hdhomerun_config discover |awk '{print $3}')
@@ -30,11 +33,11 @@ hdhomerun_config $device scan 1 | grep -vEi 'tsid|lock|none' | while read output
 			echo "Scanning channel: $channel"
 		fi
 		if [[ "$output" == "PROGRAM"* ]]; then
-			prog=$(echo $output | awk '{print $2}')
-			file=$(echo $output | cut -d':' -f2)
+			program=$(echo $output | awk '{print $2}')
+			channelname=$(echo $output | cut -d':' -f2)
 			# Create .strm file
 			echo "Created strm file for $file"
-			echo hdhomerun://$device-1/tuner1$file\?channel\=auto\:$channel\&program\=${prog/:/} > ~/Videos/Live\ TV/"${file/\ /}".strm		
+			echo "hdhomerun://${device}-${tuner}/tuner${tuner}?channel=auto:${channel}&program=${program}" >"${directory}/${channelname}.strm"
 		fi
 	done
 	echo "Finished."

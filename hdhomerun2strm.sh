@@ -14,6 +14,12 @@ fi
 
 # Discover device name
 device=$(hdhomerun_config discover |awk '{print $3}')
+if [[ "$device" == "found"* ]]; then
+	echo "No HDHomeRun device found." 
+	exit 0
+else
+	echo "Found HDHomeRun device '$device'."
+fi
 
 # Scan channels directly into while loop - pull relevant data and create strm file
 hdhomerun_config $device scan 1 | grep -vEi 'tsid|lock|none' | while read output

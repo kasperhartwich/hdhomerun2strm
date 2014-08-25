@@ -9,4 +9,4 @@ http://www.silicondust.com/support/hdhomerun/downloads/
 Takes two parameters. Destination directory and tuner to use on your HDHomeRun.
 
 Example:
-./hdhomerun2strm.sh 1 ~\Videos/Live\ TV/
+./hdhomerun2strm.sh 1 ~/Videos/LiveTV/

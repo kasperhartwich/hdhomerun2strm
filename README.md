@@ -1,5 +1,5 @@
 # hdhomerun2strm.sh
-### (a fork of homeruntv.sh from https://github.com/JoshBulger/HDHomeRun)
+## (a fork of homeruntv.sh from https://github.com/JoshBulger/HDHomeRun)
 
 This script creates strm files for a HDHomeRun for use in for example XBMC or VLC.
 
